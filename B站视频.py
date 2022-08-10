@@ -4,7 +4,7 @@ import json,os,re,requests,subprocess,time
 
 #网站请求
 def get_response(url):
-    headers = {'origin': 'https://www.bilibili.com','referer': 'https://www.bilibili.com','user-agent': 'Mozilla/5.0(iPad;CPUOS13_3likeMacOSX)AppleWebKit/605.1.15(KHTML,likeGecko)CriOS/87.0.4280.77Mobile/15E148Safari/604.1'}
+    headers = {'origin': 'https://www.bilibili.com','referer': 'https://www.bilibili.com','user-agent': 'Mozilla/5.0(iPad;CPUOS13_3likeMacOSX)AppleWebKit/605.1.15(KHTML,likeGecko)CriOS/87.0.4280.77Mobile/15E148Safari/604.1','cookie':cookie}
     response = requests.get(url=url,headers=headers)
     return response
 
