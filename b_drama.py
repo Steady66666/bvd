@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-import imp
 import json,os,time
 from blibili_requests import get_response
 from cookies import dedeuserid
@@ -80,7 +79,7 @@ def download(url,title):
 def main(run):
     if run != True:
         exit()
-    drama_type = input(f'1.追番     2.追剧')
+    drama_type = input(f'1.追番     2.追剧\n')
     urls_json = seasons_info(dedeuserid,drama_type)
     # print(urls_json)#调试
     for urls in urls_json:
@@ -92,7 +91,7 @@ def main(run):
         chips(url,title,v_type='drama')
         print('下一个...')
     print('全部下载完成！')
-    keepgoing = input('是否继续下载？\n1.yes    2.no')
+    keepgoing = input('是否继续下载？\n1.yes    2.no\n')
     if keepgoing == '1':
         os.chdir(os.path.pardir)
         main(True)

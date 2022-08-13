@@ -78,18 +78,18 @@ def chips_download(title,v_url,back_v_url,a_url,back_a_url):
       
 
 def chips(url,title,v_type):
-    if not os.path.exists(f'{title}.flv'):
+    if not os.path.exists(f'{title}.mp4'):
         v_a_url = get_response(url).json()
         if v_type == 'drama':
             v_url = v_a_url['result']['dash']['video'][0]['baseUrl']
             a_url = v_a_url['result']['dash']['audio'][0]['baseUrl']
             back_v_url = v_a_url['result']['dash']['video'][0]['backupUrl']
             back_a_url = v_a_url['result']['dash']['audio'][0]['backupUrl']
-            video_size = v_a_url['result']['dash']['video'][0]['size']
-            audio_size = v_a_url['result']['dash']['audio'][0]['size']
+            # video_size = v_a_url['result']['dash']['video'][0]['size']
+            # audio_size = v_a_url['result']['dash']['audio'][0]['size']
             chips_download(title,v_url,back_v_url,a_url,back_a_url)
             print(f'{title} 下载完成！\n 开始合并文件...')
-            cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.flv'
+            cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.mp4'
             subprocess.call(cmd,shell=True)
             os.remove(title+'a.m4s')
             os.remove(title+'v.m4s')

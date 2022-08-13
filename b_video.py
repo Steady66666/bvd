@@ -27,7 +27,7 @@ def get_video_info(url):
 
 #文件下载
 def save_file(title,video,video_back,audio,audio_back):
-    if not os.path.exists(f'{title}.flv'):
+    if not os.path.exists(f'{title}.mp4'):
         chips_download(title,video,video_back,audio,audio_back)
         # print('下载中。。。。')
         # video_content = get_response(video).content
@@ -40,9 +40,9 @@ def save_file(title,video,video_back,audio,audio_back):
 
 #视频合成
 def translate_file(title):
-    if not os.path.exists(f'{title}.flv'):
+    if not os.path.exists(f'{title}.mp4'):
         print('视频开始合成：'+title)
-        cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.flv'
+        cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.mp4'
         subprocess.call(cmd,shell=True)
         os.remove(title+'a.m4s')
         os.remove(title+'v.m4s')
@@ -77,10 +77,10 @@ def video_list(url):
         save_file(video_info[0],video_info[1],video_info[2],video_info[3],video_info[4])
         name = video_info[0] + str(i)
         title = video_info[0]
-        cmd = f'ffmpeg -i {title}.mp4 -i {title}.wav -c:v copy -c:a aac -strict experimental {name}.flv'
+        cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {name}.mp4'
         subprocess.call(cmd,shell=True)
-        os.remove(title+'.mp4')
-        os.remove(title+'.wav')
+        os.remove(title+'v.m4s')
+        os.remove(title+'a.m4s')
         print("第 "+str(i)+"/"+str(list_no)+ "个下载完成")
     print('全部下载完成')
     os.chdir(os.pardir)
