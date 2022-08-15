@@ -14,10 +14,11 @@ def series_list(vmid,drama_type):
     info = []
     for single in series_list_info:
         media_id = single['media_id']
+        season_type_name = single['season_type_name']
         id_url = f'https://api.bilibili.com/pgc/review/user?media_id={media_id}'
         ep_id = get_response(id_url).json()['result']['media']['new_ep']['id']
         title = single['title'] + '--' + single['season_title']
-        sinfo = f'{{\"name\":\"{title}",\"media_id\":\"{media_id}\",\"ep_id\":\"{ep_id}\"}}'
+        sinfo = f'{{\"name\":\"{title}",\"media_id\":\"{media_id}\",\"ep_id\":\"{ep_id}\",\"season_type_name\":\"{season_type_name}\"}}'
         sinfo = json.loads(sinfo)
         info.append(sinfo)
     return info
@@ -28,10 +29,15 @@ def seasons_info(vmid,drama_type):
     a = 0
     for list_info in res:
         a=a+1
-        msg = str(a) + '. ' +list_info['name']
+        msg = str(a) + '. ' +list_info['name'] + f'   类型：'+list_info['season_type_name']
         print(msg)
     chooise = int(input("输入编号："))-1
     dir_name = res[chooise]['name']
+    work_dir = res[chooise]['season_type_name']
+    if not os.path.exists(work_dir):
+        os.mkdir(work_dir)
+    os.chdir(work_dir)
+
     if not os.path.exists(f'{dir_name}'):
         os.mkdir(dir_name)
     os.chdir(dir_name)
@@ -49,37 +55,13 @@ def seasons_info(vmid,drama_type):
         singel_url = json.loads(singel_url)
         urls.append(singel_url)
     return urls
-'''
-# 下载视频和音频
-def download(url,title):
-    # print(url)#调试
-    if not os.path.exists(f'{title}.flv'):
-        v_a_url = get_response(url).json()
-        v_url = v_a_url['result']['dash']['video'][0]['baseUrl']
-        a_url = v_a_url['result']['dash']['audio'][0]['baseUrl']
 
-        print(f'正在下载视频：{title}')
-        video_content = get_response(v_url).content
-        with open(title + 'v.m4s',mode='wb') as f:
-            f.write(video_content)
-        
-        print('开始下载音频...')
-        audio_content = get_response(a_url).content
-        with open(title + 'a.m4s',mode='wb') as f:
-            f.write(audio_content)    
-        
-        print(f'{title} 下载完成！\n 开始合并文件...')
-        cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.flv'
-        subprocess.call(cmd,shell=True)
-        os.remove(title+'a.m4s')
-        os.remove(title+'v.m4s')
-        print(f'{title}--完成')
-'''
 # 启动
 def main(run):
     if run != True:
         exit()
     drama_type = input(f'1.追番     2.追剧\n')
+    base_path = os.getcwd() #根目录
     urls_json = seasons_info(dedeuserid,drama_type)
     # print(urls_json)#调试
     for urls in urls_json:
@@ -93,7 +75,7 @@ def main(run):
     print('全部下载完成！')
     keepgoing = input('是否继续下载？\n1.yes    2.no\n')
     if keepgoing == '1':
-        os.chdir(os.path.pardir)
+        os.chdir(base_path)
         main(True)
     else:
         exit()

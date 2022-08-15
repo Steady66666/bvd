@@ -3,7 +3,6 @@ from selenium import webdriver
 from PIL import Image
 from selenium.webdriver import ActionChains
 from bot_api import base64_api
-# from settings import user_name,password
 
 def auto_login(telephone,browser):
     if browser == "Edge":
