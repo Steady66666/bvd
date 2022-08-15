@@ -37,6 +37,13 @@ if __name__ == "__main__":
     print('Edge:https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/')
     print('Chrome:https://chromedriver.chromium.org/downloads')
     print('版本号查看：浏览器——设置——关于')
+    cookie_file = os.path.exists('cookies.json')
+    if not cookie_file:
+        print('cookie文件不存在,自动创建')
+        ckEnv = f"{{\"cookies\":{{}}}}"
+        with open('cookies.json','w')as f:
+            f.write(ckEnv)
+            f.close()
     if os.path.exists('msedgedriver.exe'):
         browser = 'Edge'
     elif os.path.exists('chromedrive.exe'):

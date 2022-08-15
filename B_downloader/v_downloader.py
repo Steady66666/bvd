@@ -103,87 +103,6 @@ def chips_download(title,v_url,back_v_url,a_url,back_a_url):
                         print(f'备用链接2 下载失败\n本应下载大小：{video_size}\n实际下载大小：{real_size}\n完成度：{final_persent}')
                         print('当前网络质量差，请换个时间段下载！')
                         return 'failed'
-'''
-            # print(back_v_url)
-            # url_i = 1
-            # for backurl in back_v_url:
-                # print(backurl)
-            #     try:
-            #         video_content = get_response(backurl)
-            #         with open(title + 'v.m4s',mode='wb') as f:
-            #             for i in video_content.iter_content(chunk_size=10240):
-            #                 f.write(i)
-            #         with open(title + 'v.m4s',mode='r') as f:
-            #             real_size = os.fstat(f.fileno()).st_size
-            #             final_persent = f'{int(real_size/video_size*100)} %'
-            #             if video_size == real_size:
-            #                 download_success = True
-            #                 break
-            #             else:
-            #                 print(f'备用链接{url_i} 下载失败\n本应下载大小：{video_size}\n实际下载大小：{real_size}\n完成度：{final_persent}')
-            #                 raise IOError('Data Lost')
-            #     except IOError:
-            #         false_times = false_times+1
-            #         print('下载失败，将会在3s后重试！')
-            #         download_success = False
-            #         time.sleep(3)
-            # if download_success:
-            #     break
-            # else:
-            #     print('，目前网络质量很差，稍后再试')
-            #     exit(1)
-    # false_times = 0
-    # while false_times <= 3:
-    #     print(f'正在下载音频：{title}')
-    #     try:
-    #         video_content = get_response(a_url)
-    #         video_size = int(video_content.headers['Content-Length'])
-    #         with open(title + 'a.m4s',mode='wb') as f:
-    #             for i in video_content.iter_content(chunk_size=10240):
-    #                 f.write(i)
-    #         with open(title + 'a.m4s',mode='r') as f:
-    #             real_size = os.fstat(f.fileno()).st_size
-    #             final_persent = f'{int(real_size/video_size*100)} %'
-    #             if video_size == real_size:
-    #                 break
-    #             else:
-    #                 print(f'主链接下载失败\n本应下载大小：{video_size}\n实际下载大小：{real_size}\n完成度：{final_persent}')
-    #                 raise IOError('Data Lost')
-    #     except IOError:
-    #         false_times = false_times+1
-    #         print("将使用备用下载")
-    #         # print(back_a_url)
-    #         url_i = 1
-    #         for backurl in back_a_url:
-    #             print(backurl)
-    #             try:
-    #                 video_content = get_response(backurl)
-    #                 with open(title + 'a.m4s',mode='wb') as f:
-    #                     for i in video_content.iter_content(chunk_size=10240):
-    #                         f.write(i)
-    #                 with open(title + 'a.m4s',mode='r') as f:
-    #                     real_size = os.fstat(f.fileno()).st_size
-    #                     final_persent = f'{int(real_size/video_size*100)} %'
-    #                     if video_size == real_size:
-    #                         download_success = True
-    #                         break
-    #                     else:
-    #                         print(f'备用链接{url_i} 下载失败\n本应下载大小：{video_size}\n实际下载大小：{real_size}\n完成度：{final_persent}')
-    #                         url_i = url_i +1
-    #                         raise IOError('Data Lost')
-    #             except IOError:
-    #                 false_times = false_times+1
-    #                 print('下载失败，将会在3s后重试！')
-    #                 download_success = False
-    #                 time.sleep(3)
-    #         if download_success:
-    #             break
-    #         else:
-    #             print('，目前网络质量很差，稍后再试')
-    #             exit(1)
-'''
-      
-
 def chips(url,title,v_type):
     if not os.path.exists(f'{title}.mp4'):
         v_a_url = get_response(url).json()
@@ -198,12 +117,8 @@ def chips(url,title,v_type):
             if chips_download == 'failed':
                 exit(1)
             print(f'{title} 下载完成！\n 开始合并文件...')
-            cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.mp4'
+            cmd = f'ffmpeg -i {title}v.m4s -i {title}a.m4s -c:v copy -c:a aac -strict experimental {title}.mp4 -loglevel quiet'
             subprocess.call(cmd,shell=True)
             os.remove(title+'v.m4s')
             os.remove(title+'a.m4s')
             print(f'{title}--完成')
-
-# url = 'https://api.bilibili.com/pgc/player/web/playurl?avid=290463136&cid=335163826&qn=120&fnver=0&fnval=4048&fourk=1&ep_id=400869&session=878a9399a51d444ab0340e9daef15263'
-# title = 'test'
-# chips(url,title,v_type='drama')
