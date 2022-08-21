@@ -37,5 +37,3 @@ def live_download(base_dir):
                 subprocess.call(cmd,shell=True)
                 os.remove(obj_title+'v.m4s')
                 os.remove(obj_title+'a.m4s')
-
-live_download('E:\\Documents\\Github\\打卡')
