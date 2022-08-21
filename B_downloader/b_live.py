@@ -9,7 +9,7 @@ def live_download(base_dir):
     
     live_list_url = 'https://api.bilibili.com/pugv/pay/web/my/paid?ps=10&pn=1'  #课程列表
     list_res = json.loads(str(get_response(live_list_url).json()['data']['data']).replace('\'','\"').replace('False','\"False\"'))
-    print(list_res)##############
+    # print(list_res)##############
     for obj in list_res:
         os.chdir(base_dir)
         season_id = obj['id']   #课程id
